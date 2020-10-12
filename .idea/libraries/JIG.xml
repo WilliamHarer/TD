@@ -1,0 +1,11 @@
+<component name="libraryTable">
+  <library name="JIG">
+    <CLASSES>
+      <root url="file://$PROJECT_DIR$/../JIG" />
+    </CLASSES>
+    <JAVADOC />
+    <SOURCES>
+      <root url="file://$PROJECT_DIR$/../JIG/jig/src" />
+    </SOURCES>
+  </library>
+</component>
