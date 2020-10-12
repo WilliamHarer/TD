@@ -8,14 +8,14 @@ import org.newdawn.slick.state.StateBasedGame;
 
 import javax.swing.plaf.nimbus.State;
 
-public class OrkFortressStartUp extends BasicGameState{
+public class OrkFortressPlayingState extends BasicGameState{
     @Override
     public void init(GameContainer container, StateBasedGame game)
-        throws SlickException{
+            throws SlickException{
 
     }
     @Override
-    public void enter(GameContainer container,StateBasedGame game) {container.setSoundOn(false);}
+    public void enter(GameContainer container,StateBasedGame game) {container.setSoundOn(true);}
 
     @Override
     public void render(GameContainer container, StateBasedGame game,
@@ -34,5 +34,5 @@ public class OrkFortressStartUp extends BasicGameState{
 
     }
     @Override
-    public int getID() {return OrkFortressGame.STARTSTATE;}
+    public int getID() {return OrkFortressGame.PLAYINGSTATE;}
 }
