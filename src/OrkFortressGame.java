@@ -11,6 +11,8 @@ public class OrkFortressGame extends StateBasedGame {
     public final int ScreenWidth;
     public final int ScreenHeight;
     public static final int STARTSTATE=0;
+    public static final int PLAYINGSTATE=0;
+    public static final int GAMEOVERSTATE=0;
 
     public OrkFortressGame(String title, int width, int height) {
         super(title);
@@ -19,11 +21,13 @@ public class OrkFortressGame extends StateBasedGame {
         Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
     }
     @Override
-    public void initStatesList(GameContainer container) throws SlickException {
+    public void initStatesList(GameContainer container) {
         addState(new OrkFortressStartUp());
+        addState(new OrkFortressPlayingState());
+        addState(new OrkFortressGameOverState());
 
     }
-    public static void main(String[] arges) {
+    public static void main(String[] args) {
         AppGameContainer app;
         try {
             app = new AppGameContainer(new OrkFortressGame("Ork Fortress", 800,600));
