@@ -20,7 +20,11 @@ public class OrkFortressStartUp extends BasicGameState{
     @Override
     public void render(GameContainer container, StateBasedGame game,
                        Graphics g) throws SlickException{
-
+        OrkFortressGame og= (OrkFortressGame)game;
+        for(int i=0; i<15;i++){
+            g.drawLine(0,og.ScreenHeight-((i)* og.ScreenHeight/15),og.ScreenWidth,og.ScreenHeight-((i)* og.ScreenHeight/15));
+            g.drawLine(og.ScreenWidth-((i)* og.ScreenWidth/15),0,og.ScreenWidth-((i)* og.ScreenWidth/15),og.ScreenHeight);
+        }
     }
     @Override
     public void update(GameContainer container, StateBasedGame game,

@@ -20,6 +20,7 @@ public class OrkFortressGame extends StateBasedGame {
     }
     @Override
     public void initStatesList(GameContainer container) throws SlickException {
+        addState(new OrkFortressStartUp());
 
     }
     public static void main(String[] arges) {
