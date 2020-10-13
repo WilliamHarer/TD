@@ -25,6 +25,7 @@ public class OrkFortressPlayingState extends BasicGameState{
                        Graphics g) throws SlickException{
         OrkFortressGame og= (OrkFortressGame)game;
         Input input=container.getInput();
+        g.drawImage(ResourceManager.getImage(OrkFortressGame.MAP_DEBUG_IMG_RSC),0,0);
         g.drawImage(ResourceManager.getImage(OrkFortressGame.TOPBAR_IMG_RSC),0,0);
         g.drawImage(ResourceManager.getImage(OrkFortressGame.SIDEBAR_IMG_RSC),641,0);
         g.drawImage(ResourceManager.getImage(OrkFortressGame.FROSTTURRET_IMG_RSC),747,40);

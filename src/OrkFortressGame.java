@@ -20,6 +20,7 @@ public class OrkFortressGame extends StateBasedGame {
     public static final String LIGHTNINGTURRET_IMG_RSC="resources/LightningPlaceHolder.png";
     public static final String SIDEBAR_IMG_RSC="resources/SideBarPlaceholder.png";
     public static final String TOPBAR_IMG_RSC="resources/TopBarPlaceHolder.png";
+    public static final String MAP_DEBUG_IMG_RSC="resources/MapPlaceHolder.png";
     ArrayList<Turret> turrets;
 
     public OrkFortressGame(String title, int width, int height) {
