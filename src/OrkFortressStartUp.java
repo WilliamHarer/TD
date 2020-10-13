@@ -31,6 +31,11 @@ public class OrkFortressStartUp extends BasicGameState{
     @Override
     public void update(GameContainer container, StateBasedGame game,
                        int delta) throws SlickException {
+        Input input = container.getInput();
+        OrkFortressGame og=(OrkFortressGame)game;
+        if(input.isKeyDown(Input.KEY_ENTER)){
+            og.enterState(OrkFortressGame.PLAYINGSTATE);
+        }
 
     }
     @Override
