@@ -31,6 +31,7 @@ public class OrkFortressGame extends StateBasedGame {
         ScreenWidth=width;
         Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
         turrets=new ArrayList<Turret>(10);
+        monsters=new ArrayList<Monster>(10);
     }
     @Override
     public void initStatesList(GameContainer container) {
