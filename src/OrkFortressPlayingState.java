@@ -30,11 +30,13 @@ public class OrkFortressPlayingState extends BasicGameState{
         for(int i=0;i<20;i++) {
             og.monsters.add(new Monster(0, (4*40)+20, (float) .1, 0));
         }
-        for(int i=0;i<15;i++){
+        /*for(int i=0;i<15;i++){
             for(int j=0;j<15;j++){
-                //System.out.println(levelMap.paths[i][j]+":"+i+":"+j);
+                if(levelMap.paths[i][j]!=-1) {
+                    System.out.println(levelMap.paths[i][j] + ":" + i + ":" + j);
+                }
             }
-        }
+        }*/
     }
     @Override
     public void enter(GameContainer container,StateBasedGame game) {container.setSoundOn(true);}
@@ -79,8 +81,9 @@ public class OrkFortressPlayingState extends BasicGameState{
             mCheck= !mCheck;
         }
         for(int i=0;i<og.monsters.size();i++){
-            int row= (int) (og.monsters.get(i).getX()/(og.ScreenWidth/15));
-            int col=(int) (og.monsters.get(i).getY()/(og.ScreenHeight/15));
+            int col= (int) (og.monsters.get(i).getX()/(og.ScreenWidth/15));
+            int row=(int) (og.monsters.get(i).getY()/(og.ScreenHeight/15));
+            //System.out.println(row+":::"+col);
             int[][] directions=new int[4][2];
             directions[0][0]=row;
             directions[0][1]=col-1;
@@ -94,15 +97,22 @@ public class OrkFortressPlayingState extends BasicGameState{
             int wall=-1;
             int direction=4;
             //System.out.println(row+":"+col);
+            /*if(row==4 && col==2){
+                for(int j=0;j<4;j++){
+                    System.out.println(directions[j][0]+":"+directions[j][1]);
+                    System.out.println(levelMap.paths[directions[j][0]][directions[j][1]]);
+                }
+
+            }*/
             for(int j=0;j<4;j++){
                 if(directions[j][0]>0&&directions[j][0]< levelMap.paths.length &&
                         directions[j][1]>0 && directions[j][1]<levelMap.paths[0].length) {
                     //System.out.println(levelMap.paths[directions[j][0]][directions[j][1]]);
                     if (levelMap.paths[directions[j][0]][directions[j][1]] < min && levelMap.paths[directions[j][0]][directions[j][1]]!=wall) {
                         min = levelMap.paths[directions[j][0]][directions[j][1]];
-                        System.out.println(levelMap.paths[directions[j][0]][directions[j][1]]);
-                        System.out.println(j);
-                        System.out.println(":"+directions[j][0]+":"+directions[j][1]);
+                        //System.out.println(levelMap.paths[directions[j][0]][directions[j][1]]);
+                        //System.out.println(j);
+                        //System.out.println(":"+directions[j][0]+":"+directions[j][1]);
                         direction = j;
                     }
                     //System.out.println(direction);
