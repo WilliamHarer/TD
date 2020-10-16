@@ -13,6 +13,7 @@ import java.util.ArrayList;
 public class OrkFortressPlayingState extends BasicGameState{
     public boolean mCheck=false;
     public Map levelMap;
+    public Wave waves;
     //turrets = new ArrayList<Turret>
     @Override
     public void init(GameContainer container, StateBasedGame game)
@@ -27,7 +28,8 @@ public class OrkFortressPlayingState extends BasicGameState{
         levelMap.digPath(8,8,14,9);
         levelMap.digPath(14,8,15,11);
         levelMap.setPath(levelMap.paths);
-        for(int i=0;i<20;i++) {
+        waves=new Wave(5,20);
+        /*for(int i=0;i<20;i++) {
             og.monsters.add(new Monster(0, (4*40)+20, (float) .1, 0));
         }
         /*for(int i=0;i<15;i++){
@@ -74,12 +76,28 @@ public class OrkFortressPlayingState extends BasicGameState{
                        int delta) throws SlickException {
         OrkFortressGame og = (OrkFortressGame)game;
         Input input=container.getInput();
+        for(int i=0; i<og.turrets.size();i++){
+
+        }
         if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
             if(mCheck){
                 og.turrets.add(new Turret(53*((int)(input.getMouseX())/53),40*((int)(input.getMouseY())/40)));
             }
             mCheck= !mCheck;
         }
+        if(waves.timer==0){
+            System.out.println("workin");
+            if(waves.count>0){
+                og.monsters.add(waves.spawn(0, (4*40)+20, (float) .1, 0));
+                waves.resetTimer();
+            }
+        }
+        /*if wave time==0:
+        *   if wave count >0
+        *       decrease count
+        *               //use delta which is the # in ms in betweeen each update
+        *       spawn Monster
+        *       reset timer*/
         for(int i=0;i<og.monsters.size();i++){
             int col= (int) (og.monsters.get(i).getX()/(og.ScreenWidth/15));
             int row=(int) (og.monsters.get(i).getY()/(og.ScreenHeight/15));
@@ -121,6 +139,8 @@ public class OrkFortressPlayingState extends BasicGameState{
             og.monsters.get(i).turn(direction);
             og.monsters.get(i).update(delta);
         }
+        waves.update(delta);
+        //System.out.println(waves.timer);
     }
     @Override
     public int getID() {return OrkFortressGame.PLAYINGSTATE;}
