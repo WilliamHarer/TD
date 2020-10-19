@@ -63,6 +63,14 @@ public class OrkFortressPlayingState extends BasicGameState{
         }
         for(int i=0;i<og.monsters.size();i++){
             og.monsters.get(i).render(g);
+            /*for(int j=0;j<og.turrets.size();j++){
+                g.drawLine(og.monsters.get(i).getX(),og.monsters.get(i).getY(),og.turrets.get(j).getX(),og.turrets.get(j).getY());
+            }*/
+        }
+        for(int i=0;i<og.turrets.size();i++){
+            if(og.turrets.get(i).target !=null) {
+                g.drawLine(og.turrets.get(i).target.getX(), og.turrets.get(i).target.getY(), og.turrets.get(i).getX(), og.turrets.get(i).getY());
+            }
         }
         for(int i =0; i<og.turrets.size();i++){
             og.turrets.get(i).render(g);
@@ -76,9 +84,9 @@ public class OrkFortressPlayingState extends BasicGameState{
                        int delta) throws SlickException {
         OrkFortressGame og = (OrkFortressGame)game;
         Input input=container.getInput();
-        for(int i=0; i<og.turrets.size();i++){
+        /*for(int i=0; i<og.turrets.size();i++){
 
-        }
+        }*/
         if(input.isMousePressed(Input.MOUSE_LEFT_BUTTON)){
             if(mCheck){
                 og.turrets.add(new Turret(53*((int)(input.getMouseX())/53),40*((int)(input.getMouseY())/40)));
@@ -86,7 +94,7 @@ public class OrkFortressPlayingState extends BasicGameState{
             mCheck= !mCheck;
         }
         if(waves.timer==0){
-            System.out.println("workin");
+            //System.out.println("workin");
             if(waves.count>0){
                 og.monsters.add(waves.spawn(0, (4*40)+20, (float) .1, 0));
                 waves.resetTimer();
@@ -99,7 +107,21 @@ public class OrkFortressPlayingState extends BasicGameState{
         *       spawn Monster
         *       reset timer*/
         for(int i=0;i<og.monsters.size();i++){
-            int col= (int) (og.monsters.get(i).getX()/(og.ScreenWidth/15));
+            for(int j=0;j<og.turrets.size();j++){
+                float y=og.turrets.get(j).getY()-og.monsters.get(i).getY();
+                float x=og.turrets.get(j).getX()-og.monsters.get(i).getX();
+                if(Math.sqrt((y*y)+(x*x))<og.turrets.get(j).range){
+                    og.turrets.get(j).Shoot(og.monsters.get(i));
+                }
+                else{
+                    if(og.turrets.get(j).target==og.monsters.get(i)){
+                        og.turrets.get(j).Shoot(null);
+                    }
+                }
+            }
+        }
+        for(int i=0;i<og.monsters.size();i++){
+            int col= (int) ((og.monsters.get(i).getX()-23)/(og.ScreenWidth/15));
             int row=(int) (og.monsters.get(i).getY()/(og.ScreenHeight/15));
             //System.out.println(row+":::"+col);
             int[][] directions=new int[4][2];
