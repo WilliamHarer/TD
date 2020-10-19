@@ -20,7 +20,10 @@ public class OrkFortressGame extends StateBasedGame {
     public static final String LIGHTNINGTURRET_IMG_RSC="resources/LightningPlaceHolder.png";
     public static final String SIDEBAR_IMG_RSC="resources/SideBarPlaceholder.png";
     public static final String TOPBAR_IMG_RSC="resources/TopBarPlaceHolder.png";
+    public static final String MAP_DEBUG_IMG_RSC="resources/MapPlaceHolder.png";
+    public static final String SLIME_IMG_RSC="resources/SlimePlaceholder.png";
     ArrayList<Turret> turrets;
+    ArrayList<Monster> monsters;
 
     public OrkFortressGame(String title, int width, int height) {
         super(title);
@@ -28,6 +31,7 @@ public class OrkFortressGame extends StateBasedGame {
         ScreenWidth=width;
         Entity.setCoarseGrainedCollisionBoundary(Entity.AABB);
         turrets=new ArrayList<Turret>(10);
+        monsters=new ArrayList<Monster>(10);
     }
     @Override
     public void initStatesList(GameContainer container) {
