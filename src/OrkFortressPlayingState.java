@@ -20,6 +20,8 @@ public class OrkFortressPlayingState extends BasicGameState{
     public boolean towerDefense=true;
     public int gold=200;
     public int turretCost=20;
+    ArrayList<LightningTurret> lightningTurretArrayList=new ArrayList<LightningTurret>(10);
+    ArrayList<AoeTurret> aoeTurretArrayList=new ArrayList<AoeTurret>(10);
     ArrayList<Monster> RTSmonsters=new ArrayList<Monster>(10);
     ArrayList<OrkLabor> laborers=new ArrayList<OrkLabor>(10);
     ArrayList<OrkSoldier> soldiers=new ArrayList<OrkSoldier>(10);
@@ -58,6 +60,7 @@ public class OrkFortressPlayingState extends BasicGameState{
                        Graphics g) throws SlickException{
         OrkFortressGame og= (OrkFortressGame)game;
         Input input=container.getInput();
+        //TODO start putting these into methods ASAP
         if(towerDefense) {
             g.drawImage(ResourceManager.getImage(OrkFortressGame.MAP_DEBUG_IMG_RSC), 0, 0);
             g.drawImage(ResourceManager.getImage(OrkFortressGame.FROSTTURRET_IMG_RSC), 750, 40);
@@ -93,6 +96,12 @@ public class OrkFortressPlayingState extends BasicGameState{
             }
             for (int i = 0; i < og.turrets.size(); i++) {
                 og.turrets.get(i).render(g);
+            }
+            for(int i=0;i<lightningTurretArrayList.size();i++){
+                lightningTurretArrayList.get(i).render(g);
+            }
+            for(int i=0;i<aoeTurretArrayList.size();i++){
+                aoeTurretArrayList.get(i).render(g);
             }
             if (mCheck1) {
                 g.drawImage(ResourceManager.getImage(OrkFortressGame.TURRET_IMG_RSC), 50 * ((int) (input.getMouseX()) / 50), 40 * ((int) (input.getMouseY()) / 40));
@@ -328,11 +337,11 @@ public class OrkFortressPlayingState extends BasicGameState{
                     mCheck1 = !mCheck1;
                 }
                 if (mCheck2) {
-                    og.turrets.add(new Turret((50 * ((int) ((input.getMouseX()) / 50)))-1, 40 * ((int) ((input.getMouseY()) / 40))));
+                    aoeTurretArrayList.add(new AoeTurret((50 * ((int) ((input.getMouseX()) / 50)))-1, 40 * ((int) ((input.getMouseY()) / 40))));
                     mCheck2 = !mCheck2;
                 }
                 if (mCheck3) {
-                    og.turrets.add(new Turret((50 * ((int) ((input.getMouseX()) / 50)))-1, 40 * ((int) ((input.getMouseY()) / 40))));
+                    lightningTurretArrayList.add(new LightningTurret((50 * ((int) ((input.getMouseX()) / 50)))-1, 40 * ((int) ((input.getMouseY()) / 40))));
                     mCheck3 = !mCheck3;
                 }
                 if (buttonClick(input.getMouseX(), input.getMouseY(), og.ScreenHeight, og.ScreenWidth) == 10) {
