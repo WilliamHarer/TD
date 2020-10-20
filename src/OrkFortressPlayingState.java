@@ -259,15 +259,7 @@ public class OrkFortressPlayingState extends BasicGameState{
                 laborers.get(i).setTarget(RTSmonsters.get(i));
                 float xDist=(RTSmonsters.get(i).getX()-laborers.get(i).getX());
                 float yDist=(RTSmonsters.get(i).getY()-(laborers.get(i).getY()));
-                float vx=(float).5/xDist;
-                float vy=(float).5/yDist;
-                if(Math.abs(xDist)<1){
-                    vx=0;
-                }
-                if(Math.abs(yDist)<1){
-                    vy=0;
-                }
-                laborers.get(i).setVelocity(new Vector(vx,vy));
+                laborers.get(i).setVelocity(new Vector(xDist,yDist).setLength((float).1));
             }
         }
         for(int i=0;i<laborers.size();i++){
