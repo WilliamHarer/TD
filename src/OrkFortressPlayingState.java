@@ -1,4 +1,5 @@
 import jig.ResourceManager;
+import jig.Vector;
 import org.lwjgl.Sys;
 import org.newdawn.slick.GameContainer;
 import org.newdawn.slick.Graphics;
@@ -100,6 +101,15 @@ public class OrkFortressPlayingState extends BasicGameState{
             for (int i=0; i<laborers.size();i++){
                 laborers.get(i).render(g);
             }
+            for(int i=0; i<16;i++){
+                int lineHeight = og.ScreenHeight - ((i) * og.ScreenHeight / 15);
+                int LineWidth = og.ScreenWidth - ((i) * og.ScreenWidth / 16);
+                g.drawLine(LineWidth,0, LineWidth,og.ScreenHeight);
+                g.drawLine(0, lineHeight,og.ScreenWidth, lineHeight);
+                if(i!=15){
+                    g.drawLine(0, lineHeight,og.ScreenWidth, lineHeight);
+                }
+            }
 
         }
     }
@@ -190,8 +200,9 @@ public class OrkFortressPlayingState extends BasicGameState{
             System.out.println(levelMap.exitCol+"|||"+ levelMap.exitRow);
             if(col==levelMap.exitCol&&row==levelMap.exitRow){
                 //System.out.println(levelMap.exitCol+":"+ levelMap.enterCol);
-                og.monsters.get(i).setX(40);
-                og.monsters.get(i).setY(40);
+                og.monsters.get(i).setX(6*(og.ScreenWidth/16));
+                og.monsters.get(i).setY(3*(og.ScreenHeight/15));
+                og.monsters.get(i).setVelocity(new Vector(0,(float).1));
                 RTSmonsters.add(og.monsters.get(i));
                 og.monsters.remove(i);
                 continue;
@@ -238,6 +249,31 @@ public class OrkFortressPlayingState extends BasicGameState{
             }
             og.monsters.get(i).turn(direction);
             og.monsters.get(i).update(delta);
+        }
+        for(int i=0;i<RTSmonsters.size();i++){
+            for(int j=i*(laborers.size()/RTSmonsters.size());j<((laborers.size()/RTSmonsters.size())+(i*(laborers.size()/RTSmonsters.size())));j++){
+                if(laborers.get(i).haveTarget()){
+                    continue;
+                }
+                RTSmonsters.get(i).setVelocity(new Vector(0,0));
+                float xDist=(RTSmonsters.get(i).getX()-laborers.get(i).getX());
+                float yDist=(RTSmonsters.get(i).getY()-(laborers.get(i).getY()));
+                float vx=(float).5/xDist;
+                float vy=(float).5/yDist;
+                if(Math.abs(xDist)<1){
+                    vx=0;
+                }
+                if(Math.abs(yDist)<1){
+                    vy=0;
+                }
+                laborers.get(i).setVelocity(new Vector(vx,vy));
+            }
+        }
+        for(int i=0;i<RTSmonsters.size();i++){
+            RTSmonsters.get(i).update(delta);
+        }
+        for(int i=0;i<laborers.size();i++){
+            laborers.get(i).update(delta);
         }
         waves.update(delta);
         //System.out.println(waves.timer);

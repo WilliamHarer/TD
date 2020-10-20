@@ -46,9 +46,6 @@ public class Monster extends Entity {
     public void turnDown(){
         velocity=new Vector(0,(float).1);
     }
-    public void turnUp(){
-        velocity=new Vector(0,(float)-.1);
-
-    }
+    public void turnUp(){ velocity=new Vector(0,(float)-.1); }
 
 }
