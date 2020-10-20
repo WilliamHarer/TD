@@ -193,7 +193,20 @@ public class OrkFortressPlayingState extends BasicGameState{
                 }
             }
         }
+        for (int i = 0; i < og.turrets.size(); i++) {
+            if (og.turrets.get(i).target != null) {
+                og.turrets.get(i).getTarget().setHealth(og.turrets.get(i).getTarget().getHealth()-og.turrets.get(i).getDamage());
+                if(og.turrets.get(i).target.getHealth()<0){
+                    og.turrets.get(i).Shoot(null);
+                }
+            }
+        }
         for(int i=0;i<og.monsters.size();i++){
+            if(og.monsters.get(i).getHealth()<0){
+                og.monsters.get(i).removeImage(ResourceManager.getImage(OrkFortressGame.SLIME_IMG_RSC));
+                og.monsters.remove(i);
+                continue;
+            }
             int col= (int) ((og.monsters.get(i).getX())/(og.ScreenWidth/15));
             int row=(int) (og.monsters.get(i).getY()/(og.ScreenHeight/15));
             System.out.println(row+":::"+col);
