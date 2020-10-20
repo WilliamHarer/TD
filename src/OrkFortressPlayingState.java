@@ -27,13 +27,14 @@ public class OrkFortressPlayingState extends BasicGameState{
             throws SlickException{
         OrkFortressGame og=(OrkFortressGame)game;
         levelMap=new Map(og.ScreenWidth,og.ScreenHeight);
-        levelMap.setEnter(0,4);
-        levelMap.setExit(14,11);
-        levelMap.digPath(4,0,5,4);
-        levelMap.digPath(4,3,7,4);
-        levelMap.digPath(7,3,8,9);
-        levelMap.digPath(8,8,14,9);
-        levelMap.digPath(14,8,15,11);
+        //Thanks to the confusing nature of working x and y vs 2D arrays, the below input is not the (x,y) denotion of the cell, but the  [y][x] of an Array
+        levelMap.setEnter(4,0);
+        levelMap.setExit(14,12);
+        levelMap.digPath(4,0,5,5);
+        levelMap.digPath(4,4,7,5);
+        levelMap.digPath(7,4,8,10);
+        levelMap.digPath(8,9,14,10);
+        levelMap.digPath(14,9,15,12);
         levelMap.setPath(levelMap.paths);
         waves=new Wave(5,20);
         /*for(int i=0;i<20;i++) {
@@ -57,11 +58,11 @@ public class OrkFortressPlayingState extends BasicGameState{
         Input input=container.getInput();
         if(towerDefense) {
             g.drawImage(ResourceManager.getImage(OrkFortressGame.MAP_DEBUG_IMG_RSC), 0, 0);
-            g.drawImage(ResourceManager.getImage(OrkFortressGame.FROSTTURRET_IMG_RSC), 747, 40);
+            g.drawImage(ResourceManager.getImage(OrkFortressGame.FROSTTURRET_IMG_RSC), 750, 40);
             g.drawImage(ResourceManager.getImage(OrkFortressGame.TOPBAR_IMG_RSC), 0, 0);
-            g.drawImage(ResourceManager.getImage(OrkFortressGame.SIDEBAR_IMG_RSC), 641, 0);
-            g.drawImage(ResourceManager.getImage(OrkFortressGame.BOMBTURRET_IMG_RSC), 694, 40);
-            g.drawImage(ResourceManager.getImage(OrkFortressGame.LIGHTNINGTURRET_IMG_RSC), 641, 40);
+            g.drawImage(ResourceManager.getImage(OrkFortressGame.SIDEBAR_IMG_RSC), 650, 0);
+            g.drawImage(ResourceManager.getImage(OrkFortressGame.BOMBTURRET_IMG_RSC), 700, 40);
+            g.drawImage(ResourceManager.getImage(OrkFortressGame.LIGHTNINGTURRET_IMG_RSC), 650, 40);
             //g.drawImage(ResourceManager.getImage(OrkFortressGame.));
             for(int i=0; i<16;i++){
                 int lineHeight = og.ScreenHeight - ((i) * og.ScreenHeight / 15);
@@ -70,6 +71,11 @@ public class OrkFortressPlayingState extends BasicGameState{
                 g.drawLine(0, lineHeight,og.ScreenWidth, lineHeight);
                 if(i!=15){
                     g.drawLine(0, lineHeight,og.ScreenWidth, lineHeight);
+                }
+            }
+            for(int i=0;i<15;i++){
+                for(int j=0;j<16;j++){
+                    g.drawString(String.valueOf(levelMap.paths[i][j]),j*og.ScreenWidth/16,i*og.ScreenHeight/15);
                 }
             }
             for (int i = 0; i < og.monsters.size(); i++) {
@@ -87,13 +93,13 @@ public class OrkFortressPlayingState extends BasicGameState{
                 og.turrets.get(i).render(g);
             }
             if (mCheck) {
-                g.drawImage(ResourceManager.getImage(OrkFortressGame.TURRET_IMG_RSC), 53 * ((int) (input.getMouseX()) / 53), 40 * ((int) (input.getMouseY()) / 40));
+                g.drawImage(ResourceManager.getImage(OrkFortressGame.TURRET_IMG_RSC), 50 * ((int) (input.getMouseX()) / 50), 40 * ((int) (input.getMouseY()) / 40));
             }
         }
         else{
             g.drawImage(ResourceManager.getImage(OrkFortressGame.ORK_FORTRESS_MAP_RSC), 0, 0);
             g.drawImage(ResourceManager.getImage(OrkFortressGame.TOPBAR_IMG_RSC), 0, 0);
-            g.drawImage(ResourceManager.getImage(OrkFortressGame.SIDEBAR_IMG_RSC), 641, 0);
+            g.drawImage(ResourceManager.getImage(OrkFortressGame.SIDEBAR_IMG_RSC), 650, 0);
             for (int i = 0; i < RTSmonsters.size(); i++) {
                 RTSmonsters.get(i).render(g);
                 /*for(int j=0;j<og.turrets.size();j++){
@@ -122,6 +128,12 @@ public class OrkFortressPlayingState extends BasicGameState{
         System.out.println(yRow+":"+xCol);
         if(yRow==0&&xCol==0){
             return 10;
+        }
+        if(yRow==1&&xCol==14){
+            return 3;
+        }
+        if(yRow==1&&xCol==13){
+            return 2;
         }
         if(yRow==1 && xCol==12){
             return 1;
@@ -164,10 +176,13 @@ public class OrkFortressPlayingState extends BasicGameState{
                 og.monsters.remove(i);
                 continue;
             }
-            int col = (int) ((og.monsters.get(i).getX()) / (og.ScreenWidth / 15));
-            int row = (int) (og.monsters.get(i).getY() / (og.ScreenHeight / 15));
-            System.out.println(row + ":::" + col);
-            System.out.println(levelMap.exitCol + "|||" + levelMap.exitRow);
+            int col = (int) ((og.monsters.get(i).getX())/ (og.ScreenWidth / 16));
+            int row = (int) (og.monsters.get(i).getY()/ (og.ScreenHeight / 15));
+            if(col<0 || row<0){
+                continue;
+            }
+            //System.out.println(row + ":::" + col);
+            //System.out.println(levelMap.exitCol + "|||" + levelMap.exitRow);
             if (col == levelMap.exitCol && row == levelMap.exitRow) {
                 //System.out.println(levelMap.exitCol+":"+ levelMap.enterCol);
                 og.monsters.get(i).setX(6 * (og.ScreenWidth / 16));
@@ -213,15 +228,15 @@ public class OrkFortressPlayingState extends BasicGameState{
             }
             if (og.monsters.get(i).getDirection() != direction) {
                 if (row > 0 && col > 0) {
-                    og.monsters.get(i).setX(((og.ScreenWidth / 15) * col) + 27);
-                    og.monsters.get(i).setY(((og.ScreenHeight / 15) * row) + 20);
+                    og.monsters.get(i).setX(((og.ScreenWidth / 16) * col)+25);
+                    og.monsters.get(i).setY(((og.ScreenHeight / 15) * row)+20);
                 }
             }
             og.monsters.get(i).turn(direction);
             og.monsters.get(i).update(delta);
         }
         SoldierTarget();
-        SoldierComabt(delta);
+        SoldierCombat(delta);
         RTSmonsterLootKillUpdate(delta);
         waves.update(delta);
         //System.out.println(waves.timer);
@@ -240,7 +255,7 @@ public class OrkFortressPlayingState extends BasicGameState{
             }
         }
     }
-    public void SoldierComabt(int delta){
+    public void SoldierCombat(int delta){
         for(int i=0;i<laborers.size();i++){
             if(laborers.get(i).haveTarget()) {
                 float xDist = (laborers.get(i).getTarget().getX() - laborers.get(i).getX());
@@ -303,13 +318,19 @@ public class OrkFortressPlayingState extends BasicGameState{
                 if (buttonClick(input.getMouseX(), input.getMouseY(), og.ScreenHeight, og.ScreenWidth) == 10) {
                     towerDefense = !towerDefense;
                 }
+                if (buttonClick(input.getMouseX(), input.getMouseY(), og.ScreenHeight, og.ScreenWidth)==3){
+
+                }
+                if (buttonClick(input.getMouseX(), input.getMouseY(), og.ScreenHeight, og.ScreenWidth)==2){
+
+                }
                 if (buttonClick(input.getMouseX(), input.getMouseY(), og.ScreenHeight, og.ScreenWidth) == 1) {
                     if(gold>=turretCost) {
                         gold-=turretCost;
                         mCheck = !mCheck;
                     }
                 } else if (mCheck) {
-                    og.turrets.add(new Turret(53 * ((int) (input.getMouseX()) / 53), 40 * ((int) (input.getMouseY()) / 40)));
+                    og.turrets.add(new Turret((50 * ((int) ((input.getMouseX()) / 50)))-1, 40 * ((int) ((input.getMouseY()) / 40))));
                     mCheck = !mCheck;
                 }
             }
