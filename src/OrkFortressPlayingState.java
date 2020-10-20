@@ -12,7 +12,9 @@ import javax.swing.plaf.nimbus.State;
 import java.util.ArrayList;
 
 public class OrkFortressPlayingState extends BasicGameState{
-    public boolean mCheck=false;
+    public boolean mCheck1=false;
+    public boolean mCheck2=false;
+    public boolean mCheck3=false;
     public Map levelMap;
     public Wave waves;
     public boolean towerDefense=true;
@@ -92,8 +94,14 @@ public class OrkFortressPlayingState extends BasicGameState{
             for (int i = 0; i < og.turrets.size(); i++) {
                 og.turrets.get(i).render(g);
             }
-            if (mCheck) {
+            if (mCheck1) {
                 g.drawImage(ResourceManager.getImage(OrkFortressGame.TURRET_IMG_RSC), 50 * ((int) (input.getMouseX()) / 50), 40 * ((int) (input.getMouseY()) / 40));
+            }
+            if (mCheck2){
+                g.drawImage(ResourceManager.getImage(OrkFortressGame.LIGHTNINGTURRET_IMG_RSC),50 * ((int) (input.getMouseX()) / 50), 40 * ((int) (input.getMouseY()) / 40));
+            }
+            if (mCheck3){
+                g.drawImage(ResourceManager.getImage(OrkFortressGame.BOMBTURRET_IMG_RSC),50 * ((int) (input.getMouseX()) / 50), 40 * ((int) (input.getMouseY()) / 40));
             }
         }
         else{
@@ -315,23 +323,38 @@ public class OrkFortressPlayingState extends BasicGameState{
     public void UIupdate(Input input,OrkFortressGame og){
         if(towerDefense) {
             if (input.isMousePressed(Input.MOUSE_LEFT_BUTTON)) {
+                if (mCheck1) {
+                    og.turrets.add(new Turret((50 * ((int) ((input.getMouseX()) / 50)))-1, 40 * ((int) ((input.getMouseY()) / 40))));
+                    mCheck1 = !mCheck1;
+                }
+                if (mCheck2) {
+                    og.turrets.add(new Turret((50 * ((int) ((input.getMouseX()) / 50)))-1, 40 * ((int) ((input.getMouseY()) / 40))));
+                    mCheck2 = !mCheck2;
+                }
+                if (mCheck3) {
+                    og.turrets.add(new Turret((50 * ((int) ((input.getMouseX()) / 50)))-1, 40 * ((int) ((input.getMouseY()) / 40))));
+                    mCheck3 = !mCheck3;
+                }
                 if (buttonClick(input.getMouseX(), input.getMouseY(), og.ScreenHeight, og.ScreenWidth) == 10) {
                     towerDefense = !towerDefense;
                 }
                 if (buttonClick(input.getMouseX(), input.getMouseY(), og.ScreenHeight, og.ScreenWidth)==3){
-
+                    if(gold>=turretCost) {
+                        gold-=turretCost;
+                        mCheck3 = !mCheck3;
+                    }
                 }
                 if (buttonClick(input.getMouseX(), input.getMouseY(), og.ScreenHeight, og.ScreenWidth)==2){
-
+                    if(gold>=turretCost) {
+                        gold-=turretCost;
+                        mCheck2 = !mCheck2;
+                    }
                 }
                 if (buttonClick(input.getMouseX(), input.getMouseY(), og.ScreenHeight, og.ScreenWidth) == 1) {
                     if(gold>=turretCost) {
                         gold-=turretCost;
-                        mCheck = !mCheck;
+                        mCheck1 = !mCheck1;
                     }
-                } else if (mCheck) {
-                    og.turrets.add(new Turret((50 * ((int) ((input.getMouseX()) / 50)))-1, 40 * ((int) ((input.getMouseY()) / 40))));
-                    mCheck = !mCheck;
                 }
             }
         }
