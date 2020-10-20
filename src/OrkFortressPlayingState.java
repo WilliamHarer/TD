@@ -271,7 +271,7 @@ public class OrkFortressPlayingState extends BasicGameState{
             }
         }
         for(int i=0;i<laborers.size();i++){
-            if(laborers.get(i).getTarget()!=null) {
+            if(laborers.get(i).haveTarget()) {
                 float xDist = (laborers.get(i).getTarget().getX() - laborers.get(i).getX());
                 float yDist = (laborers.get(i).getTarget().getY() - (laborers.get(i).getY()));
                 if((Math.abs(xDist)+Math.abs(yDist))<20){

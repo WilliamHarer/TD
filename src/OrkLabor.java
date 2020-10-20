@@ -3,7 +3,7 @@ import jig.Vector;
 
 public class OrkLabor extends Monster{
     private Vector velocity;
-    private Monster target;
+    private Monster target=null;
     private int damage=20;
     public OrkLabor(float x, float y, float vx, float vy) {
         super(x, y,vx,vy);

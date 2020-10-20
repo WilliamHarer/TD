@@ -14,6 +14,7 @@ public class Wave {
     public Monster spawn(float x,float y,float vx, float vy){
         Monster newMonster=new Monster(x,y,vx,vy);
         newMonster.setDirection(1);
+        newMonster.setHealth(100);
         return newMonster;
     }
     public void update(int delta){
