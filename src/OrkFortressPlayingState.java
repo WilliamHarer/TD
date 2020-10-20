@@ -16,6 +16,8 @@ public class OrkFortressPlayingState extends BasicGameState{
     public Wave waves;
     public boolean towerDefense=true;
     ArrayList<Monster> RTSmonsters=new ArrayList<Monster>(10);
+    ArrayList<OrkLabor> laborers=new ArrayList<OrkLabor>(10);
+    ArrayList<OrkSoldier> soldiers=new ArrayList<OrkSoldier>(10);
     //turrets = new ArrayList<Turret>
     @Override
     public void init(GameContainer container, StateBasedGame game)
@@ -95,6 +97,9 @@ public class OrkFortressPlayingState extends BasicGameState{
                     g.drawLine(og.monsters.get(i).getX(),og.monsters.get(i).getY(),og.turrets.get(j).getX(),og.turrets.get(j).getY());
                 }*/
             }
+            for (int i=0; i<laborers.size();i++){
+                laborers.get(i).render(g);
+            }
 
         }
     }
@@ -140,7 +145,7 @@ public class OrkFortressPlayingState extends BasicGameState{
                     towerDefense = !towerDefense;
                 }
                 if (buttonClick(input.getMouseX(), input.getMouseY(), og.ScreenHeight, og.ScreenWidth) == 1) {
-                    //spawn laborer
+                    laborers.add(new OrkLabor(400,300,0,0));
                 }
                 if (buttonClick(input.getMouseX(), input.getMouseY(), og.ScreenHeight, og.ScreenWidth) == 2) {
                     //spawn miner
