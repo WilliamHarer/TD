@@ -6,6 +6,7 @@ public class Monster extends Entity {
     private Vector velocity;
     private int health;
     private int direction;
+    private int damage=5;
     public Monster(final float x, final float y, final float vx, final float vy){
         super(x,y);
         addImageWithBoundingBox(ResourceManager.getImage(OrkFortressGame.SLIME_IMG_RSC));

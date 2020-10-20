@@ -256,6 +256,7 @@ public class OrkFortressPlayingState extends BasicGameState{
                     continue;
                 }
                 RTSmonsters.get(i).setVelocity(new Vector(0,0));
+                laborers.get(i).setTarget(RTSmonsters.get(i));
                 float xDist=(RTSmonsters.get(i).getX()-laborers.get(i).getX());
                 float yDist=(RTSmonsters.get(i).getY()-(laborers.get(i).getY()));
                 float vx=(float).5/xDist;
@@ -269,11 +270,28 @@ public class OrkFortressPlayingState extends BasicGameState{
                 laborers.get(i).setVelocity(new Vector(vx,vy));
             }
         }
-        for(int i=0;i<RTSmonsters.size();i++){
-            RTSmonsters.get(i).update(delta);
-        }
         for(int i=0;i<laborers.size();i++){
+            if(laborers.get(i).getTarget()!=null) {
+                float xDist = (laborers.get(i).getTarget().getX() - laborers.get(i).getX());
+                float yDist = (laborers.get(i).getTarget().getY() - (laborers.get(i).getY()));
+                if((Math.abs(xDist)+Math.abs(yDist))<20){
+                    laborers.get(i).getTarget().setHealth(laborers.get(i).getTarget().getHealth()-laborers.get(i).getDamage());
+                }
+                if(laborers.get(i).getTarget().getHealth()<=0){
+                    laborers.get(i).setTarget(null);
+                }
+            }else{
+                laborers.get(i).setVelocity(new Vector(0,0));
+            }
             laborers.get(i).update(delta);
+        }
+        for(int i=0;i<RTSmonsters.size();i++){
+            if(RTSmonsters.get(i).getHealth()<0){
+                RTSmonsters.get(i).removeImage(ResourceManager.getImage(OrkFortressGame.SLIME_IMG_RSC));
+                RTSmonsters.remove(i);
+                continue;
+            }
+            RTSmonsters.get(i).update(delta);
         }
         waves.update(delta);
         //System.out.println(waves.timer);
