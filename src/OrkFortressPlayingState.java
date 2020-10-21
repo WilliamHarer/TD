@@ -85,9 +85,17 @@ public class OrkFortressPlayingState extends BasicGameState{
             }
             for (int i = 0; i < og.monsters.size(); i++) {
                 og.monsters.get(i).render(g);
+                defaultTurretsTargeting(og,i);
                 /*for(int j=0;j<og.turrets.size();j++){
                     g.drawLine(og.monsters.get(i).getX(),og.monsters.get(i).getY(),og.turrets.get(j).getX(),og.turrets.get(j).getY());
                 }*/
+            }
+            for(int i=0; i<aoeTurretArrayList.size();i++){
+                for(int j=0;j<aoeTurretArrayList.get(i).getTargets().size();j++){
+                    g.drawLine(aoeTurretArrayList.get(i).getX(),aoeTurretArrayList.get(i).getY(),aoeTurretArrayList.get(i).getTargets().get(j).getX(),
+                            aoeTurretArrayList.get(i).getTargets().get(j).getY());
+                }
+                //
             }
             for (int i = 0; i < og.turrets.size(); i++) {
                 if (og.turrets.get(i).target != null) {
@@ -182,6 +190,7 @@ public class OrkFortressPlayingState extends BasicGameState{
         *       reset timer*/
         for(int i=0;i<og.monsters.size();i++){
             defaultTurretsTargeting(og,i);
+            aoeTurretsTargeting(og,i);
         }
         defaultTurretsCombat(delta, og);
 
@@ -298,6 +307,20 @@ public class OrkFortressPlayingState extends BasicGameState{
                 continue;
             }
             RTSmonsters.get(i).update(delta);
+        }
+    }
+    public void aoeTurretsTargeting(OrkFortressGame og,int i){
+        for(int j=0;j<aoeTurretArrayList.size();j++){
+            float y=aoeTurretArrayList.get(j).getY()-og.monsters.get(i).getY();
+            float x=aoeTurretArrayList.get(j).getX()-og.monsters.get(i).getX();
+            if(Math.sqrt((y*y)+(x*x))<aoeTurretArrayList.get(j).range){
+                aoeTurretArrayList.get(j).Shoot(og.monsters.get(i));
+            }
+            else{
+                if(aoeTurretArrayList.get(j).getTargets().contains(og.monsters.get(i))){
+                    aoeTurretArrayList.get(j).getTargets().remove(og.monsters.get(i));
+                }
+            }
         }
     }
     public void defaultTurretsTargeting(OrkFortressGame og,int i){

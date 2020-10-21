@@ -8,7 +8,6 @@ public class Turret extends Entity {
     int damage=10;
     int fireRate=(int) 1.2*1000;
     int timeToFire=0;
-    int towerType=0;
     public Turret(final float x, final float y) {
         super(x + 26, y + 20);
         addImageWithBoundingBox(ResourceManager
