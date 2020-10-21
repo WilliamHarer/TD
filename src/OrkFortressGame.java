@@ -22,6 +22,10 @@ public class OrkFortressGame extends StateBasedGame {
     public static final String TOPBAR_IMG_RSC="resources/TopBarPlaceHolder.png";
     public static final String MAP_DEBUG_IMG_RSC="resources/MapPlaceHolder.png";
     public static final String SLIME_IMG_RSC="resources/SlimePlaceholder.png";
+    public static final String ORK_FORTRESS_MAP_RSC="resources/FortressPlaceHolder.png";
+    public static final String ORK_LABOR_WOOD_RSC="resources/OrkLaborWood.png";
+    public static final String ORK_LABOR_MINE_RSC="resources/OrkLaborMines.png";
+    public static final String ORK_SOLDIER_RSC="resources/OrkPlaceholder.png";
     ArrayList<Turret> turrets;
     ArrayList<Monster> monsters;
 

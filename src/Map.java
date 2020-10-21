@@ -4,7 +4,7 @@ import java.util.LinkedList;
 import java.util.Queue;
 
 public class Map {
-    int[][] paths=new int[15][15];
+    int[][] paths=new int[15][16];
     private final int maxDist=1000;
     private final int wall=-1;
     int exitCol;
@@ -13,7 +13,7 @@ public class Map {
     int enterRow;
     public Map(int ScreenWidth,int ScreenHeight){
         for(int i=0;i<15;i++){
-            for(int j=0;j<15;j++) {
+            for(int j=0;j<16;j++) {
                 paths[i][j] = -1;
             }
         }
