@@ -40,7 +40,7 @@ public class OrkFortressPlayingState extends BasicGameState{
         levelMap.digPath(8,9,14,10);
         levelMap.digPath(14,9,15,12);
         levelMap.setPath(levelMap.paths);
-        waves=new Wave(5,20);
+        waves=new Wave(1,20);
         /*for(int i=0;i<20;i++) {
             og.monsters.add(new Monster(0, (4*40)+20, (float) .1, 0));
         }
@@ -63,11 +63,11 @@ public class OrkFortressPlayingState extends BasicGameState{
         //TODO start putting these into methods ASAP
         if(towerDefense) {
             g.drawImage(ResourceManager.getImage(OrkFortressGame.MAP_DEBUG_IMG_RSC), 0, 0);
-            g.drawImage(ResourceManager.getImage(OrkFortressGame.FROSTTURRET_IMG_RSC), 750, 40);
             g.drawImage(ResourceManager.getImage(OrkFortressGame.TOPBAR_IMG_RSC), 0, 0);
             g.drawImage(ResourceManager.getImage(OrkFortressGame.SIDEBAR_IMG_RSC), 650, 0);
             g.drawImage(ResourceManager.getImage(OrkFortressGame.BOMBTURRET_IMG_RSC), 700, 40);
-            g.drawImage(ResourceManager.getImage(OrkFortressGame.LIGHTNINGTURRET_IMG_RSC), 650, 40);
+            g.drawImage(ResourceManager.getImage(OrkFortressGame.LIGHTNINGTURRET_IMG_RSC), 750, 40);
+            g.drawImage(ResourceManager.getImage(OrkFortressGame.FROSTTURRET_IMG_RSC), 650, 40);
             //g.drawImage(ResourceManager.getImage(OrkFortressGame.));
             for(int i=0; i<16;i++){
                 int lineHeight = og.ScreenHeight - ((i) * og.ScreenHeight / 15);
@@ -97,6 +97,12 @@ public class OrkFortressPlayingState extends BasicGameState{
                 }
                 //
             }
+            for(int i=0;i<lightningTurretArrayList.size();i++){
+                if (lightningTurretArrayList.get(i).target!=null){
+                    g.drawLine(lightningTurretArrayList.get(i).target.getX(),lightningTurretArrayList.get(i).target.getY(),
+                            lightningTurretArrayList.get(i).getX(),lightningTurretArrayList.get(i).getY());
+                }
+            }
             for (int i = 0; i < og.turrets.size(); i++) {
                 if (og.turrets.get(i).target != null) {
                     g.drawLine(og.turrets.get(i).target.getX(), og.turrets.get(i).target.getY(), og.turrets.get(i).getX(), og.turrets.get(i).getY());
@@ -115,10 +121,10 @@ public class OrkFortressPlayingState extends BasicGameState{
                 g.drawImage(ResourceManager.getImage(OrkFortressGame.TURRET_IMG_RSC), 50 * ((int) (input.getMouseX()) / 50), 40 * ((int) (input.getMouseY()) / 40));
             }
             if (mCheck2){
-                g.drawImage(ResourceManager.getImage(OrkFortressGame.LIGHTNINGTURRET_IMG_RSC),50 * ((int) (input.getMouseX()) / 50), 40 * ((int) (input.getMouseY()) / 40));
+                g.drawImage(ResourceManager.getImage(OrkFortressGame.BOMBTURRET_IMG_RSC),50 * ((int) (input.getMouseX()) / 50), 40 * ((int) (input.getMouseY()) / 40));
             }
             if (mCheck3){
-                g.drawImage(ResourceManager.getImage(OrkFortressGame.BOMBTURRET_IMG_RSC),50 * ((int) (input.getMouseX()) / 50), 40 * ((int) (input.getMouseY()) / 40));
+                g.drawImage(ResourceManager.getImage(OrkFortressGame.LIGHTNINGTURRET_IMG_RSC),50 * ((int) (input.getMouseX()) / 50), 40 * ((int) (input.getMouseY()) / 40));
             }
         }
         else{
@@ -191,6 +197,7 @@ public class OrkFortressPlayingState extends BasicGameState{
         for(int i=0;i<og.monsters.size();i++){
             defaultTurretsTargeting(og,i);
             aoeTurretsTargeting(og,i);
+            lightningTurretsTargeting(og,i);
         }
         defaultTurretsCombat(delta, og);
 
@@ -319,6 +326,20 @@ public class OrkFortressPlayingState extends BasicGameState{
             else{
                 if(aoeTurretArrayList.get(j).getTargets().contains(og.monsters.get(i))){
                     aoeTurretArrayList.get(j).getTargets().remove(og.monsters.get(i));
+                }
+            }
+        }
+    }
+    public void lightningTurretsTargeting(OrkFortressGame og,int i){
+        for(int j=0;j<lightningTurretArrayList.size();j++){
+            float y=lightningTurretArrayList.get(j).getY()-og.monsters.get(i).getY();
+            float x=lightningTurretArrayList.get(j).getX()-og.monsters.get(i).getX();
+            if(Math.sqrt((y*y)+(x*x))<lightningTurretArrayList.get(j).range){
+                lightningTurretArrayList.get(j).Shoot(og.monsters.get(i));
+            }
+            else{
+                if(lightningTurretArrayList.get(j).target==og.monsters.get(i)){
+                    lightningTurretArrayList.get(j).Shoot(null);
                 }
             }
         }
